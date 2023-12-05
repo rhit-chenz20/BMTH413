@@ -33,7 +33,7 @@ function [eg_index, eg_id, eg_num] = computation_essential_gene(double_gene_knoc
     eg_index = [];
     
     % disable reactions by changing bounds to 0
-    
+    % num = 0;
     % looping through all genes
     for gene_i = 1:length(removeList)
         % for each gene at model.gene{gene_i}, get the list of reactions it affects
@@ -66,13 +66,15 @@ function [eg_index, eg_id, eg_num] = computation_essential_gene(double_gene_knoc
                     eg_id{essential_genes_i} = model.genes{gene_i};
                     essential_genes_i = essential_genes_i + 1;
                 end 
-                if(mod(gene_i, 100) == 0)
-                    display("not dead, yet");
-                end
+                % if(mod(gene_i, 10) == 0)
+                %     display("not dead, yet");
+                % end
                 % restore model
                 model = model_backup;
             
             end
+            % num = num + 1;
+            % display(num" gene done");
         else
             % calculate new growth
             [~,g_new] = linprog(-model.c, [], [], model.S, model.b, model.lb, model.ub, options);
@@ -83,14 +85,14 @@ function [eg_index, eg_id, eg_num] = computation_essential_gene(double_gene_knoc
                 eg_id{essential_genes_i} = model.genes{gene_i};
                 essential_genes_i = essential_genes_i + 1;
             end 
-            if(mod(gene_i, 100) == 0)
-                display("not dead, yet");
-            end
+            % % if(mod(gene_i, 100) == 0)
+            % %     display("not dead, yet");
+            % % end
             % restore model
             model = model_backup;
         end
     end
     
     eg_num = length(eg_index);
-    fprintf("%d essential genes are found", length(eg_index));
+    % fprintf("%d essential genes are found", length(eg_index));
 end
