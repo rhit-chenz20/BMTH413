@@ -46,6 +46,9 @@ function [eg_num, growthvals, pairs] =  compute_double_gene()
     eg_num = 0;
     model_backup = model;
 
+    gm.modelsense = 'max';
+
+
     parfor (pair_i = 1:m,24)
         model = model_backup;
         gene_li = pairs{pair_i};
@@ -60,12 +63,16 @@ function [eg_num, growthvals, pairs] =  compute_double_gene()
 
         % calculate new growth
         [~,g_new] = linprog(-model.c, [], [], model.S, model.b, model.lb, model.ub, options);
+
+
+        
+        
         growthvals(pair_i) = g_new;
         pairs{pair_i} = num2str(gene_li);
         % determine if v_new is too low
         if(abs(g_new) <= abs(g_ori*0.5))
             eg_num = eg_num + 1;
-            display("pairs: " + num2str() + " with growth rate "+g_new);
+            display("pairs: " + pairs{pair_i} + " with growth rate "+g_new);
         end 
         if(mod(pair_i, 1000) == 0)
             display("finished " + pair_i + "/"+m);
