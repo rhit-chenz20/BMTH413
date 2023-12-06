@@ -46,7 +46,7 @@ function [eg_num, growthvals, pairs] =  compute_double_gene()
     eg_num = 0;
     model_backup = model;
 
-    parfor (pair_i = 1:4000,24)
+    parfor (pair_i = 1:m,24)
         model = model_backup;
         gene_li = pairs{pair_i};
         for gene = gene_li
