@@ -1,4 +1,4 @@
-function [eg_pair_ind, eg_pair_in, eg_num, growthvals, pairs] =  compute_double_gene()
+function [eg_num, growthvals, pairs] =  compute_double_gene()
     load("Ec_iJO1366.mat");
     options = optimoptions('linprog','Display','none');
     [~,g_ori] = linprog(-model.c, [], [], model.S, model.b, model.lb, model.ub, options);
@@ -40,13 +40,13 @@ function [eg_pair_ind, eg_pair_in, eg_num, growthvals, pairs] =  compute_double_
             p_i = p_i+1;
         end
     end
-    growthvals = ones(1, length(pairs));
-    eg_pair_ind = [];
-    eg_pair_in = [];
+    
+    m = length(pairs);
+    growthvals = ones(1, m);
     eg_num = 0;
     model_backup = model;
 
-    parfor pair_i = 1:length(growthvals)
+    parfor (pair_i = 1:1000,24)
         model = model_backup;
         gene_li = pairs{pair_i};
         for gene = gene_li
@@ -60,12 +60,16 @@ function [eg_pair_ind, eg_pair_in, eg_num, growthvals, pairs] =  compute_double_
 
         % calculate new growth
         [~,g_new] = linprog(-model.c, [], [], model.S, model.b, model.lb, model.ub, options);
-        growthvals{pair_i} = g_new;
+        growthvals(pair_i) = g_new;
         % determine if v_new is too low
         if(abs(g_new) <= abs(g_ori*0.5))
             eg_num = eg_num + 1;
+            display("pairs: " + num2str() + " with growth rate "+);
+            
         end 
-
+        if(mod(pair_i, 1000) == 0)
+            display("finished " + pair_i + "/"+m);
+        end
     end
-
+    
 end

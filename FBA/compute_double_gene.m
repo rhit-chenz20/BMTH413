@@ -64,10 +64,11 @@ function [eg_num, growthvals, pairs] =  compute_double_gene()
         % determine if v_new is too low
         if(abs(g_new) <= abs(g_ori*0.5))
             eg_num = eg_num + 1;
+            display("pairs: " + num2str() + " with growth rate "+g_new);
         end 
         if(mod(pair_i, 1000) == 0)
             display("finished " + pair_i + "/"+m);
         end
     end
-
+    
 end
