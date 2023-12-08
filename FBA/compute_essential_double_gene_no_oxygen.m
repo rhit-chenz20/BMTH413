@@ -1,5 +1,7 @@
-function [eg_num, growthvals, pairs] =  compute_double_gene()
+function [eg_num, growthvals, pairs] = compute_essential_double_gene_no_oxygen()
     load("Ec_iJO1366.mat");
+    % turn off oxygen
+    model.lb(252) = 0;
     options = optimoptions('linprog','Display','none');
     [~,g_ori] = linprog(-model.c, [], [], model.S, model.b, model.lb, model.ub, options);
     
@@ -23,7 +25,7 @@ function [eg_num, growthvals, pairs] =  compute_double_gene()
        end
     end
 
-    eg = readtable("result_single_216_egenes_found.csv");
+    eg = readtable("result_single_209_egenes_found_no_oxygen.csv");
 
     n = length(removeList);
     pairs = {};
@@ -46,9 +48,6 @@ function [eg_num, growthvals, pairs] =  compute_double_gene()
     eg_num = 0;
     model_backup = model;
 
-    gm.modelsense = 'max';
-
-    
     parfor (pair_i = 1:m,24)
         model = model_backup;
         gene_li = pairs{pair_i};
@@ -63,20 +62,17 @@ function [eg_num, growthvals, pairs] =  compute_double_gene()
 
         % calculate new growth
         [~,g_new] = linprog(-model.c, [], [], model.S, model.b, model.lb, model.ub, options);
-
-
-        
-        
         growthvals(pair_i) = g_new;
         pairs{pair_i} = num2str(gene_li);
         % determine if v_new is too low
         if(abs(g_new) <= abs(g_ori*0.5))
             eg_num = eg_num + 1;
-            display("pairs: " + num2str() + " with growth rate "+g_new);
+            display("pairs: " + gene_li{1} + " " + model.genes{gene_li{1}} + " " + gene_li{2} + " " + model.genes{gene_li{2}} + " "+g_new);
         end 
         if(mod(pair_i, 1000) == 0)
             display("finished " + pair_i + "/"+m);
         end
     end
-    
+
+
 end
