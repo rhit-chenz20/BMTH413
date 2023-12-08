@@ -48,7 +48,7 @@ function [eg_num, growthvals, pairs] = compute_essential_double_gene_no_oxygen()
     eg_num = 0;
     model_backup = model;
 
-    parfor (pair_i = 1:m,24)
+    parfor (pair_i = 1:m,2)
         model = model_backup;
         gene_li = pairs{pair_i};
         for gene = gene_li
@@ -67,7 +67,7 @@ function [eg_num, growthvals, pairs] = compute_essential_double_gene_no_oxygen()
         % determine if v_new is too low
         if(abs(g_new) <= abs(g_ori*0.5))
             eg_num = eg_num + 1;
-            display("pairs: " + gene_li{1} + " " + model.genes{gene_li{1}} + " " + gene_li{2} + " " + model.genes{gene_li{2}} + " "+g_new);
+            display("pairs: " +  pairs{pair_i} + " "+g_new);
         
         end 
         if(mod(pair_i, 1000) == 0)
