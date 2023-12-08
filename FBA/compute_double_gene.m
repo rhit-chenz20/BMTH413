@@ -23,7 +23,7 @@ function [eg_num, growthvals, pairs] =  compute_double_gene()
        end
     end
 
-    eg = readtable("result_single_216_egenes_found.csv");
+    % eg = readtable("result_single_216_egenes_found.csv");
 
     n = length(removeList);
     pairs = {};
@@ -35,7 +35,7 @@ function [eg_num, growthvals, pairs] =  compute_double_gene()
 
     % build gene pairs
     for i = 1:length(removeList)
-        for j = i:length(removeList)
+        for j = i+1:length(removeList)
             pairs{p_i} = [i, j];
             p_i = p_i+1;
         end
@@ -45,9 +45,6 @@ function [eg_num, growthvals, pairs] =  compute_double_gene()
     growthvals = ones(1, m);
     eg_num = 0;
     model_backup = model;
-
-    gm.modelsense = 'max';
-
 
     parfor (pair_i = 1:m,24)
         model = model_backup;
@@ -63,10 +60,6 @@ function [eg_num, growthvals, pairs] =  compute_double_gene()
 
         % calculate new growth
         [~,g_new] = linprog(-model.c, [], [], model.S, model.b, model.lb, model.ub, options);
-
-
-        
-        
         growthvals(pair_i) = g_new;
         pairs{pair_i} = num2str(gene_li);
         % determine if v_new is too low
@@ -78,5 +71,5 @@ function [eg_num, growthvals, pairs] =  compute_double_gene()
             display("finished " + pair_i + "/"+m);
         end
     end
-    
+    display("pairs " + eg_num + " found");
 end

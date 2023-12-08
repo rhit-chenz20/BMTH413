@@ -51,7 +51,6 @@ function [eg_num, growthvals, pairs] = compute_essential_double_gene_no_oxygen()
     parfor (pair_i = 1:m,24)
         model = model_backup;
         gene_li = pairs{pair_i};
-        display("what1");
         for gene = gene_li
             rxc = removeList{gene};
             for r = rxc
@@ -60,22 +59,22 @@ function [eg_num, growthvals, pairs] = compute_essential_double_gene_no_oxygen()
                 model.ub(r) = 0;
             end
         end
-        display("what2");
 
         % calculate new growth
         [~,g_new] = linprog(-model.c, [], [], model.S, model.b, model.lb, model.ub, options);
         growthvals(pair_i) = g_new;
         pairs{pair_i} = num2str(gene_li);
-        display("what3");
         % determine if v_new is too low
         if(abs(g_new) <= abs(g_ori*0.5))
             eg_num = eg_num + 1;
             display("pairs: " + gene_li{1} + " " + model.genes{gene_li{1}} + " " + gene_li{2} + " " + model.genes{gene_li{2}} + " "+g_new);
+        
         end 
         if(mod(pair_i, 1000) == 0)
             display("finished " + pair_i + "/"+m);
         end
     end
-
+    display("pairs " + eg_num + " found");
+            
 
 end
