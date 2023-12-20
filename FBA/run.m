@@ -1,6 +1,6 @@
 
 % single gene knockout
-[indexes, ids, num] = computation_essential_gene_glycerol(0);
+[indexes, ids, num] = computation_essential_gene_glycerol(1);
 filename = "result_single_" + num + "_egenes_found_glycerol.csv";
 name = string(indexes).';
 T = table(ids.', 'RowNames',name);
