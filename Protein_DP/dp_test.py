@@ -1,4 +1,4 @@
-from dp_func import calculate_S_matrix, create_dp_table, initiate_dp_table, build_dp_table
+from dp_func import calculate_S_matrix, create_dp_table, initiate_dp_table, build_dp_table, back_trace
 
 test1 = [0.3, 0.5, 0.1, 0.03]
 test2 = [0.6, 0.3, 0.001, 0.4, 0.7, 0.9]
@@ -31,9 +31,15 @@ expected = [[0.00, 0.30, 0.60, 0.90, 1.20, 1.50],
             [0.90, 0.70, 0.70, 0.60, 0.80, 1.00],
             [1.20, 1.00, 1.00, 0.90, 0.70, 0.90]]
 
-print(dp_table)
+# print(dp_table)
 
 for i in range(len(expected)):
     for j in range(len(expected[0])):
         assert dp_table[i][j].value==expected[i][j], str(i) +" " + str(j)+ " excpeted: " + str(expected[i][j])+" but got " + str(dp_table[i][j].value)
-        
+    
+end_cell = dp_table[len(dp_table)-1][len(dp_table[0])-1]
+trace = back_trace(end_cell, [[]])
+
+for r in trace:
+    for x in r:
+        print(x)

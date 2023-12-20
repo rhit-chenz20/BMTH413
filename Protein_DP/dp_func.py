@@ -1,7 +1,8 @@
 
 class dp_cell():
-    def __init__(self):
+    def __init__(self, i, j):
         self.value = 0
+        self.index = (i, j)
         self.parent = []
     
     def __repr__(self):
@@ -53,7 +54,7 @@ def build_dp_table(dp_table, rho, s_matrix, num_digits):
 def create_dp_table(s_matrix):
     dp_table = []
     for i in range(len(s_matrix)+1):
-        dp_table.append([dp_cell() for j in range(len(s_matrix[0])+1)])
+        dp_table.append([dp_cell(i, j) for j in range(len(s_matrix[0])+1)])
     return dp_table
 
 def rule_1(i, j, rho, V, S, num_digits):
@@ -70,3 +71,12 @@ def rule_3(i, j, rho, V, S, num_digits):
     if(num_digits == -1):
         V[i-1][j-1].value + S[i-1][j-1]
     return round(V[i-1][j-1].value + S[i-1][j-1], num_digits)
+
+def back_trace(cell:dp_cell, trace_result:list):
+    for x in trace_result:
+        x.append(str(cell.index) + " " + str(cell.value) + "\n") 
+    if (not cell.parent):
+        return trace_result
+    for p in cell.parent:
+        result = back_trace(p, trace_result)
+    return result
