@@ -1,9 +1,9 @@
-function [eg_index, eg_id, eg_num] = computation_essential_gene_glycerol(double_gene_knockout)
+function [eg_index, eg_id, eg_num] = computation_essential_gene_glycerol()
     load("Ec_iJO1366.mat");
     eg_index = [];
     eg_id = [];
     eg_num = 0;
-    % find(model.c ~= 0);
+    
     options = optimoptions('linprog','Display','none');
     % old growth rate
     [~,g_ori] = linprog(-model.c, [], [], model.S, model.b, model.lb, model.ub, options);
