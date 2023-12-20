@@ -1,7 +1,7 @@
 
 % single gene knockout
-[indexes, ids, num] = compute_essential_gene_no_oxygen();
-filename = "result_single_" + num + "_egenes_found_no_oxygen.csv";
+[indexes, ids, num] = computation_essential_gene_glycerol(0);
+filename = "result_single_" + num + "_egenes_found_glycerol.csv";
 name = string(indexes).';
 T = table(ids.', 'RowNames',name);
 writetable(T,filename,'WriteRowNames',true);  
