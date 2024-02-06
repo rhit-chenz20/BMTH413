@@ -69,7 +69,7 @@ def align_protein_blocks(input_data):
             "optimal_alignment": optimal_alignment,
             "hh_pairs": hh_pairs
         }
-
+    print("HAHAHHA")
     return output, total_hh_pairs, total_unpaired_hs
 
 #sample input

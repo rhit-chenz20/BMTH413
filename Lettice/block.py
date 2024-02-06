@@ -58,7 +58,8 @@ def search_blocks(seq: str):
 def get_blocked_data():
     data = []
     sample = "0101000111100100000001101011000101101001"
-    with open("row_data.txt") as file:
+    with open("row_data.txt", "r") as file:
+        print("HAHAHAAAAAAAAAAAAAA")
         for sequence in file: 
             s_01 = convert_string_to_01_list(sequence)
             re = search_blocks(s_01)
