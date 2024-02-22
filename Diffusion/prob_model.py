@@ -17,7 +17,7 @@ def get_updated_ion_channels(U: list, dt: float, ion_channels: list, x:list):
     con_ion = concentration_at_ion_channels(U, indices, ion_channels, x)
     ion_states = []
     for i in range(len(ion_channels)):
-        k = estimate_k(con_ion[i])
+        k = estimate_k_close(con_ion[i]) if con_ion[i] == 0 else estimate_k_open(con_ion[i])
         threshold = 1 - math.exp(-k*dt)
         sample = np.random.uniform()
         if (sample<threshold):
@@ -49,7 +49,23 @@ def concentration_at_ion_channels(U:list, indices: list, ion_channels: list, x: 
         concentration.append(con)
     return concentration
         
-def estimate_k(u: float):
+def estimate_k_close(u: float):
+    # lower u -> higher k -> higher chance of open
+    result = 0
+    if (k_U == 1):
+        result = u
+    elif(k_U == 2):
+        result = 0.5^u
+    elif(k_U == 3):
+        result = 1/u
+    elif(k_U == 4):
+        result = math.log(u,0.5)
+    elif(k_U == 5):
+        result = 0.5 if u<0.3 else 0.1
+    
+    return result
+
+def estimate_k_open(u: float):
     # higher u -> higher k -> higher chance of close
     result = 0
     if (k_U == 1):
@@ -61,6 +77,6 @@ def estimate_k(u: float):
     elif(k_U == 4):
         result = math.log(u,2)
     elif(k_U == 5):
-        result = 0.1 if u<5 else 0.5
+        result = 0.5 if u>0.3 else 0.1
     
     return result
