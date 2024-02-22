@@ -21,9 +21,9 @@ def get_updated_ion_channels(U: list, dt: float, ion_channels: list, x:list):
         threshold = 1 - math.exp(-k*dt)
         sample = np.random.uniform()
         if (sample<threshold):
-            ion_states.append(0)
+            ion_states.append(0 if ion_channels[i] == 1 else 1)
         else:
-            ion_states.append(1)
+            ion_states.append(1 if ion_channels[i] == 1 else 0)
     return ion_states
     
 def find_interval_indices(list1, list2):
@@ -54,5 +54,13 @@ def estimate_k(u: float):
     result = 0
     if (k_U == 1):
         result = u
+    elif(k_U == 2):
+        result = 2^u
+    elif(k_U == 3):
+        result = u^2
+    elif(k_U == 4):
+        result = math.log(u,2)
+    elif(k_U == 5):
+        result = 0.1 if u<5 else 0.5
     
     return result
