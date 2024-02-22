@@ -1,6 +1,7 @@
 import numpy as np
 import math
 from scipy.integrate import solve_ivp
+from prob_model import get_updated_ion_channels
 
 # Constants and initial conditions for PDE
 D = 1  # Diffusion coefficient
