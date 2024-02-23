@@ -16,6 +16,8 @@ def calculate_hh_pairs(x_block, y_block):
                 hh_pairs += 1
     return hh_pairs
 
+calculate_hh_pairs
+
 def simulated_annealing(x_blocks, y_blocks, temp, cooling_rate):
     if not x_blocks or not y_blocks:
         return [], 0
@@ -69,7 +71,7 @@ def align_protein_blocks(input_data):
             "optimal_alignment": optimal_alignment,
             "hh_pairs": hh_pairs
         }
-    print("HAHAHHA")
+    print(hh_pairs)
     return output, total_hh_pairs, total_unpaired_hs
 
 #sample input
